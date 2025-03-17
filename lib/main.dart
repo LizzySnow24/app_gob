@@ -27,7 +27,7 @@ class LoginPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/image 8.png', height: 100), // Agrega tu logo aquí
+              Image.asset('assets/logo_oco.png', height: 100), // Agrega tu logo aquí
               const SizedBox(height: 10),
               const Text(
                 'Gobierno de Ocotlán\n2024-2027',
