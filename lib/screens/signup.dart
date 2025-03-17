@@ -9,7 +9,7 @@ class SignUpScreen extends StatelessWidget {
       ),
       body: Padding( //añade un espacio alrededor del contenido dentro del cuerpo
         padding: const EdgeInsets.all(16.0),
-        child: Column(
+        child: Column( //Organiza los widgets hijos en una columna vertical
           children: [
             TextField(
               decoration: InputDecoration(
