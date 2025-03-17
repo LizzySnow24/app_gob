@@ -64,7 +64,7 @@ class LoginPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SignUpPage()),
+                    MaterialPageRoute(builder: (context) => SignUpScreen()),
                   );
                 },
                 child: const Text('Crear cuenta'),
@@ -78,8 +78,7 @@ class LoginPage extends StatelessWidget {
                   side: BorderSide(color: Colors.grey),
                 ),
                 onPressed: () async {
-                  GoogleSignIn googleSignIn = GoogleSignIn();
-                  await googleSignIn.signIn();
+                      // Por ahora, el botón no hace nada
                 },
                 icon: Image.asset('assets/google_logo.png', height: 24), // Agrega el logo de Google
                 label: const Text('Iniciar sesión con Google'),
