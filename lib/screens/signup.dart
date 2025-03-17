@@ -11,6 +11,12 @@ class SignUpScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column( //Organiza los widgets hijos en una columna vertical
           children: [
+            Image.asset(
+              'assets/logo_oco.png',
+               width: 150, // Ancho del logo
+               height: 150, // Alto del logo
+            ),
+            SizedBox(height: 20),
             TextField(
               decoration: InputDecoration(
                 labelText: 'Nombre Completo',
