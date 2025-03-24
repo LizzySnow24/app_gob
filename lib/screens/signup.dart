@@ -1,14 +1,86 @@
 import 'package:appgob/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
+  @override
+  _SignUpScreenState createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  // Controladores para los campos de texto
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  // Función para verificar la contraseña
+  bool _verifyPassword(String password, String confirmPassword) {
+    if (password != confirmPassword) {
+      return false;
+    }
+    // Agrega más validaciones si es necesario
+    return true;
+  }
+
+  // Función de registro
+  Future<void> _registerUser() async {
+    final String name = _nameController.text;
+    final String email = _emailController.text;
+    final String phone = _phoneController.text;
+    final String password = _passwordController.text;
+    final String confirmPassword = _confirmPasswordController.text;
+
+    if (!_verifyPassword(password, confirmPassword)) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Las contraseñas no coinciden'),
+      ));
+      return;
+    }
+
+    try {
+      // Crear usuario en Firebase Auth
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Almacenar información adicional del usuario en Firestore
+      await _firestore.collection('users').doc(userCredential.user?.uid).set({
+        'name': name,
+        'email': email,
+        'phone': phone,
+      });
+
+      // Navegar al Home o a la siguiente pantalla
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
+      
+      // Mostrar mensaje de éxito
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Usuario registrado correctamente'),
+      ));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Error al registrar: $e'),
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold( // estructura básica para la pantalla
-    resizeToAvoidBottomInset: true,
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        backgroundColor: Color(0xFFF1F1F1), // Color similar al fondo del header
-        elevation: 1, // Quitar la sombra del AppBar
+        backgroundColor: Color(0xFFF1F1F1),
+        elevation: 1,
         toolbarHeight: 90,
         title: Align(
           alignment: Alignment.centerRight,
@@ -18,7 +90,7 @@ class SignUpScreen extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor:  Color(0xFF828282),
+      backgroundColor: Color(0xFF828282),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -42,37 +114,30 @@ class SignUpScreen extends StatelessWidget {
                   children: [
                     Image.asset('assets/logo_oco.png', height: 180),
                     TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Nombre Completo',
-                      ),
+                      controller: _nameController,
+                      decoration: InputDecoration(labelText: 'Nombre Completo'),
                     ),
                     const SizedBox(height: 10),
                     TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                      ),
+                      controller: _emailController,
+                      decoration: InputDecoration(labelText: 'Email'),
                     ),
                     const SizedBox(height: 10),
                     TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: 'Teléfono',
-                      ),
+                      controller: _phoneController,
+                      decoration: InputDecoration(labelText: 'Teléfono'),
                     ),
                     const SizedBox(height: 20),
                     TextField(
+                      controller: _passwordController,
                       obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                      ),
+                      decoration: InputDecoration(labelText: 'Password'),
                     ),
                     const SizedBox(height: 20),
                     TextField(
+                      controller: _confirmPasswordController,
                       obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: 'Confirm password',
-                      ),
+                      decoration: InputDecoration(labelText: 'Confirm Password'),
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
@@ -84,15 +149,15 @@ class SignUpScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: _registerUser,
                       child: const Text(
-                        'Sign up',
+                        'Sign Up',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
-                    
                     TextButton(
                       onPressed: () {
+                        // Navegar al Login
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => LoginPage()),
