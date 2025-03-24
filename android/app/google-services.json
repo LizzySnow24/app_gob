@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "424897789053",
+    "project_id": "app-gob-1c34a",
+    "storage_bucket": "app-gob-1c34a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424897789053:android:0bffe0baea072650d3c514",
+        "android_client_info": {
+          "package_name": "com.mycompany.ocomaps"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKk3eFN7GifHJJujm-qO63ss5tdagoU04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
