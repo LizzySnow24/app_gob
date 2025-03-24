@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
 import 'screens/signup.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -12,6 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: LoginPage(),
+      
     );
   }
 }
